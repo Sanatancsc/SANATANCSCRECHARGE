@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     if (pin !== MY_SECURE_PIN) {
         return res.status(403).json({ 
             Status: "FAILED", 
-            MSG: "Galat 6-Digit PIN! Kripya sahi PIN dalein.",
+            MSG: "WRONG PIN",
             AgentID: "N/A" 
         });
     }
