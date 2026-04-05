@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const { mobile, opt, amount } = req.body;
     
     // 1. Apni Real API Key yahan dalein
-    const API_KEY = "YOUR_ACTUAL_API_KEY_HERE"; 
+    const API_KEY = "e862b6-9136f7-797df0-3690ba-8f31d9"; 
 
     // 2. Sirf Digits wala Unique Agent ID Generate karna
     // Date.now() -> 13 digits (Current Time)
