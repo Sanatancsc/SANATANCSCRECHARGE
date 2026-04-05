@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     }
 
     // 2. Apni Real API Key yahan dalein
-    const API_KEY = "e862b6-9136f7-797df0-3690ba-8f31d9"; 
+    const API_KEY = ""; 
 
     // 3. Unique Agent ID (Only Digits)
     const UNIQUE_ID = Date.now().toString() + Math.floor(1000 + Math.random() * 9000).toString();
