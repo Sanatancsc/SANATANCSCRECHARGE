@@ -1,18 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-  <title>My Recharge Portal</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanatan Super Pay Demo</title>
+    <style>
+        :root { --primary: #FF4500; --secondary: #FF8C00; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff5e6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 360px; border-top: 5px solid var(--primary); }
+        h2 { color: var(--primary); text-align: center; margin-bottom: 20px; font-size: 22px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        label { font-size: 13px; font-weight: bold; color: #666; display: block; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background: #fafafa; font-size: 15px; }
+        button { width: 100%; padding: 14px; background: linear-gradient(to right, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { transform: scale(1.02); opacity: 0.9; }
+        #res { margin-top: 15px; padding: 12px; border-radius: 8px; display: none; font-size: 13px; border-left: 5px solid transparent; }
+        .SUCCESS { background: #d4edda; color: #155724; border-left-color: #28a745; }
+        .FAILED { background: #f8d7da; color: #721c24; border-left-color: #dc3545; }
+        .PENDING { background: #fff3cd; color: #856404; border-left-color: #ffc107; }
+    </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Login</h2>
-    <input id="username" placeholder="Enter Mobile">
-    <input id="password" type="password" placeholder="Enter Password">
-    <button onclick="login()">Login</button>
-    <div id="msg"></div>
-  </div>
 
-  <script src="script.js"></script>
+<div class="card">
+    <h2>🚩 Sanatan Super Pay</h2>
+    
+    <label>Mobile Number</label>
+    <input type="tel" id="mobile" placeholder="Enter 10 digit number" maxlength="10">
+
+    <label>Select Operator</label>
+    <select id="opt">
+        <option value="">-- Choose Operator --</option>
+        <option value="1">Airtel</option>
+        <option value="2">Idea</option>
+        <option value="3">Vodafone</option>
+        <option value="4">Jio</option>
+        <option value="5">Bsnl Special</option>
+        <option value="6">Bsnl Topup</option>
+    </select>
+
+    <label>Amount (₹)</label>
+    <input type="number" id="amount" placeholder="0.00">
+
+    <button onclick="doRecharge()">Recharge Now</button>
+    
+    <div id="res"></div>
+</div>
+
+<script>
+    async function doRecharge() {
+        const resDiv = document.getElementById('res');
+        const btn = document.querySelector('button');
+        
+        const mobile = document.getElementById('mobile').value;
+        const opt = document.getElementById('opt').value;
+        const amount = document.getElementById('amount').value;
+
+        if (!mobile || !opt || !amount) {
+            alert("Sabhi details bharna anivarya hai!");
+            return;
+        }
+
+        resDiv.style.display = "block";
+        resDiv.className = ""; 
+        resDiv.innerHTML = "Processing...";
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/api/recharge', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mobile, opt, amount })
+            });
+            const data = await response.json();
+            
+            resDiv.className = data.Status; 
+            resDiv.innerHTML = `<strong>Result: ${data.Status}</strong><br>${data.MSG || ''}<br>Order ID: ${data.AgentID || 'N/A'}`;
+        } catch (e) {
+            resDiv.className = "FAILED";
+            resDiv.innerHTML = "Server se sampark nahi ho paya.";
+        } finally {
+            btn.disabled = false;
+        }
+    }
+</script>
 </body>
 </html>
