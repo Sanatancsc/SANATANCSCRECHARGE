@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     }
 
     const { mobile, opt, amount } = req.body;
-    const API_KEY = "YOUR_ACTUAL_API_KEY_HERE"; // Apni key yahan dalein
+    const API_KEY = "e862b6-9136f7-797df0-3690ba-8f31d9"; // Apni key yahan dalein
     const AGENT_ID = "SSPAY" + Date.now();
 
     const apiUrl = `https://mgpayseva.com/api/RechargeWebService/apitransaction?api_key=${API_KEY}&mobile=${mobile}&opt=${opt}&amount=${amount}&agentid=${AGENT_ID}`;
